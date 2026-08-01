@@ -6,7 +6,6 @@ const Sidebar = () => {
   const location = useLocation();
 
   const isActive = (path) => {
-    // Exact match for base dashboard URLs, startswith for subpages to keep active state
     const isMatch = path === location.pathname || (path !== "/admin" && path !== "/super-admin" && path !== "/tutor" && path !== "/student" && location.pathname.startsWith(path));
     return isMatch
       ? "bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
@@ -35,6 +34,9 @@ const Sidebar = () => {
             <Link to="/student" className={`block p-3 rounded-lg font-medium transition-all duration-200 ${isActive("/student")}`}>
               View Courses
             </Link>
+            <Link to="/student/tutors" className={`block p-3 rounded-lg font-medium transition-all duration-200 ${isActive("/student/tutors")}`}>
+              Explore Tutors & Pay
+            </Link>
             <Link to="/student/exams" className={`block p-3 rounded-lg font-medium transition-all duration-200 ${isActive("/student/exams")}`}>
               Assessments
             </Link>
@@ -55,6 +57,9 @@ const Sidebar = () => {
             </Link>
             <Link to="/tutor/content" className={`block p-3 rounded-lg font-medium transition-all duration-200 ${isActive("/tutor/content")}`}>
               Manage Content
+            </Link>
+            <Link to="/tutor/enrollments" className={`block p-3 rounded-lg font-medium transition-all duration-200 ${isActive("/tutor/enrollments")}`}>
+              Enrollments & Payments
             </Link>
             <Link to="/tutor/students" className={`block p-3 rounded-lg font-medium transition-all duration-200 ${isActive("/tutor/students")}`}>
               Manage Students

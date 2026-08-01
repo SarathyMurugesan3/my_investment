@@ -21,6 +21,7 @@ const StudentProfilePage = lazy(() => import("./pages/student/StudentProfilePage
 const StudentExamsPage = lazy(() => import("./pages/student/StudentExamsPage"));
 const TakeExamPage = lazy(() => import("./pages/student/TakeExamPage"));
 const StudentDiscussionsPage = lazy(() => import("./pages/student/StudentDiscussionsPage"));
+const ExploreTutorsPage = lazy(() => import("./pages/student/ExploreTutorsPage"));
 
 // Admin & Super Admin
 const AnalyticsDashboard = lazy(() => import("./components/dashboard/AnalyticsDashboard"));
@@ -41,6 +42,7 @@ const UploadMediaPage = lazy(() => import("./pages/tutor/UploadMediaPage"));
 const TutorContentPage = lazy(() => import("./pages/tutor/TutorContentPage"));
 const ManageExamsPage = lazy(() => import("./pages/tutor/ManageExamsPage"));
 const TutorDiscussionsPage = lazy(() => import("./pages/tutor/TutorDiscussionsPage"));
+const TutorEnrollmentsPage = lazy(() => import("./pages/tutor/TutorEnrollmentsPage"));
 
 function App() {
   return (
@@ -57,11 +59,11 @@ function App() {
             {/* ========================= */}
             {/* STUDENT SAAS ROUTES       */}
             {/* ========================= */}
-            {/* TakeExamPage operates outside the Sidebar layout to enforce strict focus & fullscreen */}
             <Route path="/student/exams/take/:id" element={<ProtectedRoute allowedRoles={["STUDENT"]}><TakeExamPage /></ProtectedRoute>} />
 
             <Route path="/student" element={<ProtectedRoute allowedRoles={["STUDENT"]}><DashboardLayout /></ProtectedRoute>}>
                <Route index element={<ContentListPage />} />
+               <Route path="tutors" element={<ExploreTutorsPage />} />
                <Route path="profile" element={<StudentProfilePage />} />
                <Route path="pdf/:id" element={<PdfViewerPage />} />
                <Route path="video/:id" element={<VideoPlayerPage />} />
@@ -76,6 +78,7 @@ function App() {
                <Route index element={<Navigate to="upload" replace />} />
                <Route path="upload" element={<UploadMediaPage />} />
                <Route path="content" element={<TutorContentPage />} />
+               <Route path="enrollments" element={<TutorEnrollmentsPage />} />
                <Route path="students" element={<ManageStudentsPage />} />
                <Route path="exams" element={<ManageExamsPage />} />
                <Route path="discussions" element={<TutorDiscussionsPage />} />
