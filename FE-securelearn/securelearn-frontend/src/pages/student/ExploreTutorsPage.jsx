@@ -64,7 +64,11 @@ const ExploreTutorsPage = () => {
       fetchData();
     } catch (err) {
       console.error(err);
-      setMessage({ text: err.response?.data || "Payment failed. Please try again.", type: "error" });
+      const errPayload = err.response?.data;
+      const errorMessage = typeof errPayload === "string" 
+        ? errPayload 
+        : (errPayload?.message || errPayload?.error || err.message || "Payment failed. Please try again.");
+      setMessage({ text: errorMessage, type: "error" });
     } finally {
       setIsProcessing(false);
     }

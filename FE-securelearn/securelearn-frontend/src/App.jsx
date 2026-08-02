@@ -9,7 +9,8 @@ const DashboardLayout = lazy(() => import("./components/layout/DashboardLayout")
 // Super Admin
 const AdminDashboard = lazy(() => import("./components/superadmin/AdminDashboard"));
 
-// Auth
+// Public & Auth
+const ExplorePage = lazy(() => import("./pages/public/ExplorePage"));
 const LoginPage = lazy(() => import("./pages/auth/LoginPage"));
 const Unauthorized = lazy(() => import("./pages/auth/Unauthorized"));
 
@@ -43,6 +44,7 @@ const TutorContentPage = lazy(() => import("./pages/tutor/TutorContentPage"));
 const ManageExamsPage = lazy(() => import("./pages/tutor/ManageExamsPage"));
 const TutorDiscussionsPage = lazy(() => import("./pages/tutor/TutorDiscussionsPage"));
 const TutorEnrollmentsPage = lazy(() => import("./pages/tutor/TutorEnrollmentsPage"));
+const TutorPaymentPage = lazy(() => import("./pages/tutor/TutorPaymentPage"));
 
 function App() {
   return (
@@ -52,8 +54,9 @@ function App() {
           <Routes>
 
             {/* Public Routes */}
-            <Route path="/" element={<Navigate to="/login" />} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<ExplorePage />} />
+            <Route path="/explore" element={<ExplorePage />} />
+            <Route path="/login" element={<ExplorePage defaultModal="login" />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
 
             {/* ========================= */}
@@ -76,6 +79,7 @@ function App() {
             {/* ========================= */}
             <Route path="/tutor" element={<ProtectedRoute allowedRoles={["TUTOR"]}><DashboardLayout /></ProtectedRoute>}>
                <Route index element={<Navigate to="upload" replace />} />
+               <Route path="payment" element={<TutorPaymentPage />} />
                <Route path="upload" element={<UploadMediaPage />} />
                <Route path="content" element={<TutorContentPage />} />
                <Route path="enrollments" element={<TutorEnrollmentsPage />} />
@@ -109,7 +113,7 @@ function App() {
             </Route>
 
             {/* Fallback */}
-            <Route path="*" element={<Navigate to="/login" />} />
+            <Route path="*" element={<Navigate to="/" />} />
 
           </Routes>
         </Suspense>

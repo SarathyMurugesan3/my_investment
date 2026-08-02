@@ -89,9 +89,13 @@ const UploadMediaPage = () => {
       setTimeout(() => setMessage({ text: "", type: "" }), 5000);
       
     } catch (err) {
-      console.error(err);
+      console.error("Upload failed:", err);
+      const errPayload = err.response?.data;
+      const errorMessage = typeof errPayload === "string" 
+        ? errPayload 
+        : (errPayload?.message || errPayload?.error || err.message || "Failed to upload content. Please check file size and try again.");
       setMessage({ 
-        text: err.response?.data || "Failed to upload content. Please try again.", 
+        text: errorMessage, 
         type: "error" 
       });
     } finally {

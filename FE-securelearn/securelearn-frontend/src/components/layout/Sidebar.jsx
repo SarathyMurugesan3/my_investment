@@ -52,6 +52,9 @@ const Sidebar = () => {
         {user.role === "TUTOR" && (
           <div className="space-y-1">
             <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 ml-2">Instructor Tools</h4>
+            <Link to="/tutor/payment" className={`block p-3 rounded-lg font-medium transition-all duration-200 ${isActive("/tutor/payment")}`}>
+              💳 Subscription & Payment
+            </Link>
             <Link to="/tutor/upload" className={`block p-3 rounded-lg font-medium transition-all duration-200 ${isActive("/tutor/upload")}`}>
               Upload Video / PDF
             </Link>
