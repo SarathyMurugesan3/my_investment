@@ -11,5 +11,5 @@ jobs:
     steps:
       - name: Ping Render Backend
         run: |
-          curl -I -s https://securelearn-backend.onrender.com/
+          curl -I -s https://securelearn-backend.onrender.com/actuator/health
           echo "Ping executed successfully at $(date)"

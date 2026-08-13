@@ -3,7 +3,7 @@ import urllib.request
 import sys
 
 # Render server backend URL
-URL = "https://securelearn-backend.onrender.com/"
+URL = "https://securelearn-backend.onrender.com/actuator/health"
 
 print(f"Starting keep-alive pinger for {URL}")
 print("Press Ctrl+C to stop.")
