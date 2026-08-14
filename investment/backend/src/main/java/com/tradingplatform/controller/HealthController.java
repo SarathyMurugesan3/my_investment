@@ -21,22 +21,6 @@ public class HealthController {
     @Autowired
     private MarketDataService marketDataService;
 
-    /**
-     * Root endpoint — gives a friendly JSON response instead of 403/404
-     * when someone visits the backend URL directly.
-     */
-    @GetMapping("/")
-    public ResponseEntity<Map<String, Object>> root() {
-        Map<String, Object> info = new HashMap<>();
-        info.put("service", "Trading Analysis Backend");
-        info.put("version", "1.0.0");
-        info.put("status", "UP");
-        info.put("timestamp", LocalDateTime.now().toString());
-        info.put("healthEndpoint", "/api/health");
-        info.put("apiBase", "/api");
-        return ResponseEntity.ok(info);
-    }
-
     @GetMapping("/api/health")
     public ResponseEntity<Map<String, Object>> getHealth() {
         Map<String, Object> health = new HashMap<>();
