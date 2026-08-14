@@ -4,18 +4,9 @@ import {
   TrendingUp,
   Activity,
   Layers,
-  FileText,
   Briefcase,
   AlertTriangle,
-  Play,
-  RotateCcw,
   Zap,
-  Info,
-  DollarSign,
-  TrendingDown,
-  CheckCircle2,
-  XCircle,
-  HelpCircle,
   Newspaper
 } from 'lucide-react'
 import {
@@ -25,10 +16,7 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  CartesianGrid,
-  BarChart,
-  Bar,
-  ReferenceLine
+  CartesianGrid
 } from 'recharts'
 
 // API base path — uses relative path so it works both locally (via Vite proxy)
