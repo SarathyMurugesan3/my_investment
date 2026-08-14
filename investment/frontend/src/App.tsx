@@ -31,8 +31,9 @@ import {
   ReferenceLine
 } from 'recharts'
 
-// API base path
-const API_URL = 'http://localhost:8080/api'
+// API base path — uses relative path so it works both locally (via Vite proxy)
+// and in production (served from the same Spring Boot server on Render)
+const API_URL = '/api'
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('overview')
