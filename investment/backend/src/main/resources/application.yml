@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: trading-analysis-backend
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/trading_analysis}
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+5:30
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:supersecretjwtkeythatislongenoughforvalidation12345678901234567890}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  market-data:
+    provider: ${MARKET_DATA_PROVIDER:MOCK}
+  live-trading:
+    enabled: ${LIVE_TRADING_ENABLED:false}
+  keep-alive:
+    enabled: ${KEEP_ALIVE_ENABLED:false}
+    url: ${KEEP_ALIVE_URL:}
+    interval-minutes: ${KEEP_ALIVE_INTERVAL_MINUTES:14}
+
+groww:
+  api:
+    key: ${GROWW_API_KEY:}
+    secret: ${GROWW_API_SECRET:}
+    access-token: ${GROWW_ACCESS_TOKEN:}
+
+news:
+  api:
+    key: ${NEWS_API_KEY:}
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    com.tradingplatform: INFO
