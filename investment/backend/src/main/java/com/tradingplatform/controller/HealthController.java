@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/health")
 public class HealthController {
 
     @Autowired
@@ -22,7 +21,23 @@ public class HealthController {
     @Autowired
     private MarketDataService marketDataService;
 
-    @GetMapping
+    /**
+     * Root endpoint — gives a friendly JSON response instead of 403/404
+     * when someone visits the backend URL directly.
+     */
+    @GetMapping("/")
+    public ResponseEntity<Map<String, Object>> root() {
+        Map<String, Object> info = new HashMap<>();
+        info.put("service", "Trading Analysis Backend");
+        info.put("version", "1.0.0");
+        info.put("status", "UP");
+        info.put("timestamp", LocalDateTime.now().toString());
+        info.put("healthEndpoint", "/api/health");
+        info.put("apiBase", "/api");
+        return ResponseEntity.ok(info);
+    }
+
+    @GetMapping("/api/health")
     public ResponseEntity<Map<String, Object>> getHealth() {
         Map<String, Object> health = new HashMap<>();
         health.put("status", "UP");
@@ -44,7 +59,7 @@ public class HealthController {
         return ResponseEntity.ok(health);
     }
 
-    @GetMapping("/database")
+    @GetMapping("/api/health/database")
     public ResponseEntity<Map<String, Object>> getDatabaseHealth() {
         Map<String, Object> dbHealth = new HashMap<>();
         try {
