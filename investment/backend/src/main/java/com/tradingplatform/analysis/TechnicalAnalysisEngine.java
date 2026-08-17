@@ -12,7 +12,8 @@ public class TechnicalAnalysisEngine {
 
     public TechnicalIndicators calculateIndicators(List<Candle> candles) {
         if (candles == null || candles.size() < 30) {
-            throw new IllegalArgumentException("Insufficient data to calculate technical indicators. Minimum 30 candles required.");
+            // Return safe defaults instead of throwing — prevents 500 on cold start
+            return buildDefaultIndicators(candles);
         }
 
         String symbol = candles.getFirst().getSymbol();
@@ -228,4 +229,53 @@ public class TechnicalAnalysisEngine {
         }
         return obv;
     }
+
+    /**
+     * Returns safe default TechnicalIndicators when candle data is insufficient.
+     * Used on cold start or when DB has fewer than 30 candles stored.
+     */
+    private TechnicalIndicators buildDefaultIndicators(List<Candle> candles) {
+        double defaultPrice = 24350.0;
+        String symbol = (candles != null && !candles.isEmpty()) ? candles.getFirst().getSymbol() : "NIFTY";
+        String timeframe = (candles != null && !candles.isEmpty()) ? candles.getFirst().getTimeframe() : "15m";
+
+        if (candles != null && !candles.isEmpty()) {
+            defaultPrice = candles.getLast().getClose();
+        }
+
+        Map<String, Double> smas = Map.of("5", defaultPrice, "10", defaultPrice, "20", defaultPrice,
+                "50", defaultPrice, "100", defaultPrice, "200", defaultPrice);
+        Map<String, Double> emas = Map.of("9", defaultPrice, "20", defaultPrice, "50", defaultPrice,
+                "100", defaultPrice, "200", defaultPrice);
+
+        return TechnicalIndicators.builder()
+                .symbol(symbol)
+                .timeframe(timeframe)
+                .timestamp(LocalDateTime.now())
+                .smas(smas)
+                .emas(emas)
+                .rsi(50.0)
+                .macd(0.0)
+                .macdSignal(0.0)
+                .macdHistogram(0.0)
+                .stochasticK(50.0)
+                .stochasticD(50.0)
+                .atr(defaultPrice * 0.01)
+                .bollingerMiddle(defaultPrice)
+                .bollingerUpper(defaultPrice * 1.02)
+                .bollingerLower(defaultPrice * 0.98)
+                .bollingerBandWidth(0.04)
+                .adx(20.0)
+                .vwap(defaultPrice)
+                .obv(0.0)
+                .prevDayHigh(defaultPrice * 1.005)
+                .prevDayLow(defaultPrice * 0.995)
+                .prevClose(defaultPrice * 0.998)
+                .pivotPoint(defaultPrice)
+                .supportLevels(Map.of("S1", defaultPrice * 0.995, "S2", defaultPrice * 0.985, "S3", defaultPrice * 0.975))
+                .resistanceLevels(Map.of("R1", defaultPrice * 1.005, "R2", defaultPrice * 1.015, "R3", defaultPrice * 1.025))
+                .source("MOCK_DEFAULT")
+                .build();
+    }
 }
+
