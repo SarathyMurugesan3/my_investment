@@ -103,8 +103,8 @@ export default function App() {
   const [systemStatus, setSystemStatus] = useState({
     backend: 'checking',
     database: 'checking',
-    marketData: 'MOCK',
-    news: 'MOCK'
+    marketData: 'LIVE',
+    news: 'LIVE'
   })
 
   const [indices, setIndices] = useState<any>({
@@ -130,11 +130,11 @@ export default function App() {
       setSystemStatus({
         backend: 'UP',
         database: res.data.database || 'UP',
-        marketData: res.data.marketDataProvider || 'MOCK',
-        news: res.data.newsProvider || 'MOCK'
+        marketData: res.data.marketDataProvider || 'LIVE',
+        news: res.data.newsProvider || 'LIVE'
       })
     } catch {
-      setSystemStatus({ backend: 'DOWN', database: 'DOWN', marketData: 'MOCK', news: 'MOCK' })
+      setSystemStatus({ backend: 'DOWN', database: 'DOWN', marketData: 'LIVE', news: 'LIVE' })
     }
   }
 

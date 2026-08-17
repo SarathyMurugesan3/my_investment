@@ -19,12 +19,16 @@ import java.util.List;
 public class MarketDataService {
 
     @Autowired
-    @Qualifier("mockMarketDataProvider")
-    private MarketDataProvider mockProvider;
+    @Qualifier("liveMarketDataProvider")
+    private MarketDataProvider liveProvider;
 
     @Autowired
     @Qualifier("growwMarketDataProvider")
     private MarketDataProvider growwProvider;
+
+    @Autowired
+    @Qualifier("mockMarketDataProvider")
+    private MarketDataProvider mockProvider;
 
     @Autowired
     private CandleRepository candleRepository;
@@ -35,40 +39,44 @@ public class MarketDataService {
     @Autowired
     private OptionSnapshotRepository optionSnapshotRepository;
 
-    @Value("${app.market-data.provider:MOCK}")
+    @Value("${app.market-data.provider:LIVE}")
     private String configuredProvider;
 
     private MarketDataProvider getActiveProvider() {
         if ("GROWW".equalsIgnoreCase(configuredProvider)) {
             return growwProvider;
+        } else if ("MOCK".equalsIgnoreCase(configuredProvider)) {
+            return mockProvider;
         }
-        return mockProvider;
+        return liveProvider;
     }
 
     public MarketQuote getLatestQuote(String symbol) {
         MarketQuote quote = getActiveProvider().getQuote(symbol);
-        marketQuoteRepository.save(quote);
+        try {
+            marketQuoteRepository.save(quote);
+        } catch (Exception ignored) {}
         return quote;
     }
 
     public List<Candle> getHistoricalCandles(String symbol, String timeframe, LocalDateTime from, LocalDateTime to) {
-        List<Candle> dbCandles = candleRepository
-                .findBySymbolAndTimeframeAndTimestampBetweenOrderByTimestampAsc(symbol, timeframe, from, to);
-        
-        if (!dbCandles.isEmpty()) {
-            return dbCandles;
-        }
-
         List<Candle> freshCandles = getActiveProvider().getHistoricalData(symbol, timeframe, from, to);
         if (!freshCandles.isEmpty()) {
-            candleRepository.saveAll(freshCandles);
+            try {
+                candleRepository.saveAll(freshCandles);
+            } catch (Exception ignored) {}
+            return freshCandles;
         }
-        return freshCandles;
+
+        return candleRepository
+                .findBySymbolAndTimeframeAndTimestampBetweenOrderByTimestampAsc(symbol, timeframe, from, to);
     }
 
     public OptionSnapshot getOptionChain(String symbol) {
         OptionSnapshot snapshot = getActiveProvider().getOptionChain(symbol);
-        optionSnapshotRepository.save(snapshot);
+        try {
+            optionSnapshotRepository.save(snapshot);
+        } catch (Exception ignored) {}
         return snapshot;
     }
 

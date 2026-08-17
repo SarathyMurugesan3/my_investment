@@ -10,7 +10,7 @@ services:
       - key: MONGODB_URI
         sync: false
       - key: MARKET_DATA_PROVIDER
-        value: MOCK
+        value: LIVE
       - key: LIVE_TRADING_ENABLED
         value: "false"
       - key: JWT_SECRET

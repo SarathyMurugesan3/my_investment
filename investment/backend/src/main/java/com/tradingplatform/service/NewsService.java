@@ -14,7 +14,8 @@ import java.util.Map;
 public class NewsService {
 
     @Autowired
-    private NewsProvider mockNewsProvider;
+    @org.springframework.beans.factory.annotation.Qualifier("realNewsProvider")
+    private NewsProvider newsProvider;
 
     @Autowired
     private NewsRepository newsRepository;
@@ -23,7 +24,7 @@ public class NewsService {
     private NewsSentimentService sentimentService;
 
     public List<News> fetchAndAnalyzeNews() {
-        List<News> rawNews = mockNewsProvider.getLatestNews();
+        List<News> rawNews = newsProvider.getLatestNews();
         
         for (News news : rawNews) {
             Map<String, Object> sentiment = sentimentService.analyzeSentiment(news.getHeadline() + " " + news.getSummary());

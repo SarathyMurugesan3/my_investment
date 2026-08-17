@@ -16,7 +16,7 @@ app:
     secret: ${JWT_SECRET:supersecretjwtkeythatislongenoughforvalidation12345678901234567890}
     expiration-ms: ${JWT_EXPIRATION_MS:86400000}
   market-data:
-    provider: ${MARKET_DATA_PROVIDER:MOCK}
+    provider: ${MARKET_DATA_PROVIDER:LIVE}
   live-trading:
     enabled: ${LIVE_TRADING_ENABLED:false}
   keep-alive:

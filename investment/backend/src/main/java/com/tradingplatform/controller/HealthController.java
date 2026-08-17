@@ -38,7 +38,7 @@ public class HealthController {
         }
 
         health.put("marketDataProvider", marketDataService.getProviderName());
-        health.put("newsProvider", "MOCK");
+        health.put("newsProvider", "LIVE_RSS");
 
         return ResponseEntity.ok(health);
     }
